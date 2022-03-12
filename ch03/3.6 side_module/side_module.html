@@ -1,0 +1,26 @@
+<!-- 예제 3-5 웹어셈블리 모듈을 로드하는 side_module.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    HTML page I created for my WebAssembly module.
+
+    <script>
+      const importObject = {
+        env: {
+          __memory_base: 0,
+          __table_base: 0,
+          memory: new WebAssembly.Memory({initial: 1, maximum: 10})
+        }
+      };
+      WebAssembly.instantiateStreaming(fetch("side_module.wasm"),
+          importObject).then(result => {
+        const value = result.instance.exports.Increment(17);
+        console.log(value.toString());
+      });
+    </script>
+  </body>
+</html>
